@@ -1,9 +1,9 @@
 package tokenize
 
 import (
-	"fmt"
 	"strings"
-	"vsce/vm/cash"
+	"vsce/vm/heap"
+	"vsce/vm/heap/cash"
 )
 
 func Func_Parse(token TOKEN, file_lines []string, line string, i int) {
@@ -44,7 +44,10 @@ func Func_Parse(token TOKEN, file_lines []string, line string, i int) {
 		cash.FUNC = false
 		cash.FUNC_PUSH = false
 		cash.FUNC_LINE += strings.TrimSpace(line[:token.StartIndex])
-		fmt.Println("New_Func :", cash.FUNC_NAME, cash.FUNC_ARGS, "\n", cash.FUNC_LINE)
+		cash.Runtime.Files[cash.Runtime.Doing].FuncD[cash.FUNC_NAME] = &heap.Func_Data{
+			Args: cash.FUNC_ARGS,
+			Line: cash.FUNC_LINE,
+		}
 		cash.Clear()
 		return
 	default:

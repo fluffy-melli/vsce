@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
-	"vsce/vm/cash"
+	"vsce/vm/heap"
+	"vsce/vm/heap/cash"
 )
 
 func parseJSON(input string) (interface{}, error) {
@@ -38,7 +39,19 @@ func Variable_Parse(token TOKEN, file_lines []string, line string, i int) {
 			break
 		}
 		cash.VAR_VALUE = n
-		fmt.Println("New_Var (int) : ", cash.VAR_NAME, cash.VAR_VALUE)
+		if cash.CALL {
+			cash.Runtime.Files[cash.Runtime.Doing].FuncM[cash.VAR_NAME] = &heap.Heap{
+				Const:  cash.VAR_TYPE == CONST,
+				Global: cash.VAR_TYPE == VAR,
+				Value:  cash.VAR_VALUE,
+			}
+		} else {
+			cash.Runtime.Files[cash.Runtime.Doing].BaseM[cash.VAR_NAME] = &heap.Heap{
+				Const:  cash.VAR_TYPE == CONST,
+				Global: cash.VAR_TYPE == VAR,
+				Value:  cash.VAR_VALUE,
+			}
+		}
 		cash.Clear()
 		return
 	case FLOAT:
@@ -53,7 +66,19 @@ func Variable_Parse(token TOKEN, file_lines []string, line string, i int) {
 			break
 		}
 		cash.VAR_VALUE = n
-		fmt.Println("New_Var (float) : ", cash.VAR_NAME, cash.VAR_VALUE)
+		if cash.CALL {
+			cash.Runtime.Files[cash.Runtime.Doing].FuncM[cash.VAR_NAME] = &heap.Heap{
+				Const:  cash.VAR_TYPE == CONST,
+				Global: cash.VAR_TYPE == VAR,
+				Value:  cash.VAR_VALUE,
+			}
+		} else {
+			cash.Runtime.Files[cash.Runtime.Doing].BaseM[cash.VAR_NAME] = &heap.Heap{
+				Const:  cash.VAR_TYPE == CONST,
+				Global: cash.VAR_TYPE == VAR,
+				Value:  cash.VAR_VALUE,
+			}
+		}
 		cash.Clear()
 		return
 	case STRING:
@@ -62,7 +87,19 @@ func Variable_Parse(token TOKEN, file_lines []string, line string, i int) {
 			return
 		}
 		cash.VAR_VALUE = token.Literal
-		fmt.Println("New_Var (string) : ", cash.VAR_NAME, cash.VAR_VALUE)
+		if cash.CALL {
+			cash.Runtime.Files[cash.Runtime.Doing].FuncM[cash.VAR_NAME] = &heap.Heap{
+				Const:  cash.VAR_TYPE == CONST,
+				Global: cash.VAR_TYPE == VAR,
+				Value:  cash.VAR_VALUE,
+			}
+		} else {
+			cash.Runtime.Files[cash.Runtime.Doing].BaseM[cash.VAR_NAME] = &heap.Heap{
+				Const:  cash.VAR_TYPE == CONST,
+				Global: cash.VAR_TYPE == VAR,
+				Value:  cash.VAR_VALUE,
+			}
+		}
 		cash.Clear()
 		return
 	case LPFUNC, OLIST: // JSON || LIST
@@ -88,7 +125,19 @@ func Variable_Parse(token TOKEN, file_lines []string, line string, i int) {
 			break
 		}
 		cash.VAR_VALUE = parsed
-		fmt.Println("New_Var (json||list) : ", cash.VAR_NAME, cash.VAR_VALUE)
+		if cash.CALL {
+			cash.Runtime.Files[cash.Runtime.Doing].FuncM[cash.VAR_NAME] = &heap.Heap{
+				Const:  cash.VAR_TYPE == CONST,
+				Global: cash.VAR_TYPE == VAR,
+				Value:  cash.VAR_VALUE,
+			}
+		} else {
+			cash.Runtime.Files[cash.Runtime.Doing].BaseM[cash.VAR_NAME] = &heap.Heap{
+				Const:  cash.VAR_TYPE == CONST,
+				Global: cash.VAR_TYPE == VAR,
+				Value:  cash.VAR_VALUE,
+			}
+		}
 		cash.Clear()
 		return
 	default:

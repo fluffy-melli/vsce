@@ -16,6 +16,10 @@ func main() {
 	val j = {
 	    "owo":123
 	}
+	print("123", &f )
+	print(&l )
+	print(&j)
+	print(123)
 	`
-	vm.Get_Line(strings.Split(code, "\n"))
+	vm.Get_Line("main", strings.Split(code, "\n"))
 }

@@ -16,6 +16,12 @@ var (
 )
 
 var (
+	PRINT      bool   = false
+	PRINT_OUT  string = ""
+	PRINT_PULL bool   = false
+)
+
+var (
 	VAR       bool        = false
 	VAR_NALE  int         = 0
 	VAR_TYPE  int         = 0
@@ -37,6 +43,10 @@ var (
 )
 
 func Clear() {
+	PRINT = false
+	PRINT_OUT = ""
+	PRINT_PULL = false
+
 	VAR = false
 	VAR_NALE = 0
 	VAR_TYPE = 0

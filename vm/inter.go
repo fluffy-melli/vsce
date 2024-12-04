@@ -1,11 +1,19 @@
 package vm
 
 import (
-	"vsce/vm/cash"
+	"vsce/vm/heap"
+	"vsce/vm/heap/cash"
 	"vsce/vm/tokenize"
 )
 
-func Get_Line(file_lines []string) {
+func Get_Line(file_name string, file_lines []string) {
+	cash.Runtime.Doing = file_name
+	if cash.Runtime.Files[cash.Runtime.Doing] == nil {
+		cash.Runtime.Files[cash.Runtime.Doing] = &heap.Stack{
+			BaseM: make(map[string]*heap.Heap),
+			FuncM: make(map[string]*heap.Heap),
+		}
+	}
 	for i, line := range file_lines {
 		tokens := tokenize.GET_OPERATOR(line)
 		if len(tokens) == 0 {
@@ -25,6 +33,9 @@ func Get_Line(file_lines []string) {
 					cash.VAR_NALE = i
 					cash.StartIndex = token.EndIndex + 1
 					continue
+				case tokenize.PRINT, tokenize.PRINTF, tokenize.PRINTLN:
+					cash.PRINT = true
+					continue
 				}
 			}
 			if cash.FUNC {
@@ -32,6 +43,9 @@ func Get_Line(file_lines []string) {
 			}
 			if cash.VAR {
 				tokenize.Variable_Parse(token, file_lines, line, i)
+			}
+			if cash.PRINT {
+				tokenize.Print_Parse(token, file_lines, line, i)
 			}
 		}
 	}
