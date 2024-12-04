@@ -2,6 +2,7 @@ package vm
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 	"vsce/vm/cash"
 	"vsce/vm/tokenize"
@@ -20,6 +21,12 @@ func Get_Line(file_lines []string) {
 					cash.FUNC = true
 					cash.StartIndex = token.EndIndex + 1
 					cash.FUNC_NALE = i
+					continue
+				case tokenize.VAR, tokenize.VAL, tokenize.CONST:
+					cash.VAR = true
+					cash.VAR_TYPE = token.Type
+					cash.VAR_NALE = i
+					cash.StartIndex = token.EndIndex + 1
 					continue
 				}
 			}
@@ -69,6 +76,40 @@ func Get_Line(file_lines []string) {
 						cash.FUNC_PUSD = i
 					}
 					continue
+				}
+			}
+			if cash.VAR {
+				switch token.Type {
+				case tokenize.EQUAL:
+					if cash.VAR_NALE != i {
+						cash.FUNC_NAME = strings.TrimSpace(file_lines[cash.FUNC_NALE][cash.StartIndex:])
+						continue
+					}
+					cash.FUNC_NAME = strings.TrimSpace(line[cash.StartIndex:token.StartIndex])
+					continue
+				case tokenize.NUMBER:
+					value := strings.ReplaceAll(token.Literal, "_", "")
+					n, e := strconv.Atoi(value)
+					if e != nil {
+						fmt.Println(e.Error())
+						break
+					}
+					cash.VAR_VALUE = n
+				case tokenize.FLOAT:
+					value := strings.ReplaceAll(token.Literal, "_", "")
+					n, e := strconv.ParseFloat(value, 64)
+					if e != nil {
+						fmt.Println(e.Error())
+						break
+					}
+					cash.VAR_VALUE = n
+				case tokenize.STRING:
+					cash.VAR_VALUE = token.Literal
+				case tokenize.LPFUNC, tokenize.OLIST: // JSON || LIST
+					cash.VAR_LONG = true
+				default:
+					if cash.VAR_LONG {
+					}
 				}
 			}
 		}

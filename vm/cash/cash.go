@@ -6,14 +6,22 @@ var (
 )
 
 var (
-	VAR bool = false
-	IF  bool = false
+	IF bool = false
 )
 
 var (
 	CALL      bool        = false
 	CALL_FUNC string      = ""
 	RETURN    interface{} = nil
+)
+
+var (
+	VAR       bool        = false
+	VAR_NALE  int         = 0
+	VAR_TYPE  int         = 0
+	VAR_LONG  bool        = false
+	VAR_NAME  string      = ""
+	VAR_VALUE interface{} = nil
 )
 
 var (
