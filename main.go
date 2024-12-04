@@ -7,16 +7,15 @@ import (
 
 func main() {
 	code := `
-	func test 
-	(x, y) 
-	{
-	    if 
-		(x >= y) 
-		{
-		    return 0
-		}
+	val f = 123.12
+	val l = [
+	    1,2,3,4,5,[
+		    "123"
+		]
+	]
+	val j = {
+	    "owo":123
 	}
-	call test(0,2)
 	`
 	vm.Get_Line(strings.Split(code, "\n"))
 }

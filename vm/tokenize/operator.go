@@ -29,6 +29,7 @@ const (
 	LPFUNC           // {
 	RPFUNC           // }
 	COMMA            // ,
+	COLON            // :
 	//////////////////////////////
 	// variable
 	VAR   // var
@@ -52,8 +53,8 @@ const (
 	CALL     // call
 	//////////////////////////////
 	// value
-	NUMBER
 	FLOAT
+	NUMBER
 	STRING
 	OLIST // [
 	CLIST // ]
@@ -66,7 +67,7 @@ type TOKEN struct {
 	EndIndex   int
 }
 
-const pattern = `(?i)(?P<or>\|\|)|(?P<and>&&)|(?P<not>!)|(?P<equal>=)|(?P<du_equal>==)|(?P<not_equal>!=)|(?P<lt_equal><=)|(?P<gt_equal>>=)|(?P<lt><)|(?P<gt>>)|(?P<plus>\+)|(?P<minus>-)|(?P<multi>\*)|(?P<square>\*\*)|(?P<divide>/)|(?P<remain>%)|(?P<lparen>\()|(?P<rparen>\))|(?P<lpfunc>\{)|(?P<rpfunc>\})|(?P<comma>,)|(?P<var>\bvar\b)|(?P<val>\bval\b)|(?P<const>\bconst\b)|(?P<else_if>\belse if\b)|(?P<else>\belse\b)|(?P<if>\bif\b)|(?P<func>\bfunc\b)|(?P<fors>\bfor\b)|(?P<whiles>\bwhile\b)|(?P<break>\bbreak\b)|(?P<continue>\bcontinue\b)|(?P<return>\breturn\b)|(?P<print>\bprint\b)|(?P<printf>\bprintf\b)|(?P<println>\bprintln\b)|(?P<import>\bimport\b)|(?P<call>\bcall\b)|(?P<number>[-\d_]+)|(?P<float>[-\d_]+(?:\.\d+)?)|(?P<string>"[^"]*")|(?P<olist>\[)|(?P<clist>\])`
+const pattern = `(?i)(?P<or>\|\|)|(?P<and>&&)|(?P<not>!)|(?P<equal>=)|(?P<du_equal>==)|(?P<not_equal>!=)|(?P<lt_equal><=)|(?P<gt_equal>>=)|(?P<lt><)|(?P<gt>>)|(?P<plus>\+)|(?P<minus>-)|(?P<multi>\*)|(?P<square>\*\*)|(?P<divide>/)|(?P<remain>%)|(?P<lparen>\()|(?P<rparen>\))|(?P<lpfunc>\{)|(?P<rpfunc>\})|(?P<comma>,)|(?P<colon>:)|(?P<var>\bvar\b)|(?P<val>\bval\b)|(?P<const>\bconst\b)|(?P<else_if>\belse if\b)|(?P<else>\belse\b)|(?P<if>\bif\b)|(?P<func>\bfunc\b)|(?P<fors>\bfor\b)|(?P<whiles>\bwhile\b)|(?P<break>\bbreak\b)|(?P<continue>\bcontinue\b)|(?P<return>\breturn\b)|(?P<print>\bprint\b)|(?P<printf>\bprintf\b)|(?P<println>\bprintln\b)|(?P<import>\bimport\b)|(?P<call>\bcall\b)|(?P<float>[-\d_]+(?:\.\d+)?)|(?P<number>[-\d_]+)|(?P<string>"[^"]*")|(?P<olist>\[)|(?P<clist>\])`
 
 func GET_OPERATOR(input string) []TOKEN {
 	var tokens []TOKEN
@@ -123,6 +124,8 @@ func GET_OPERATOR(input string) []TOKEN {
 					token = TOKEN{Type: RPFUNC, Literal: match[i], StartIndex: startIndex, EndIndex: endIndex}
 				case "comma":
 					token = TOKEN{Type: COMMA, Literal: match[i], StartIndex: startIndex, EndIndex: endIndex}
+				case "colon":
+					token = TOKEN{Type: COLON, Literal: match[i], StartIndex: startIndex, EndIndex: endIndex}
 				case "var":
 					token = TOKEN{Type: VAR, Literal: match[i], StartIndex: startIndex, EndIndex: endIndex}
 				case "val":
@@ -157,10 +160,10 @@ func GET_OPERATOR(input string) []TOKEN {
 					token = TOKEN{Type: IMPORT, Literal: match[i], StartIndex: startIndex, EndIndex: endIndex}
 				case "call":
 					token = TOKEN{Type: CALL, Literal: match[i], StartIndex: startIndex, EndIndex: endIndex}
-				case "number":
-					token = TOKEN{Type: NUMBER, Literal: match[i], StartIndex: startIndex, EndIndex: endIndex}
 				case "float":
 					token = TOKEN{Type: FLOAT, Literal: match[i], StartIndex: startIndex, EndIndex: endIndex}
+				case "number":
+					token = TOKEN{Type: NUMBER, Literal: match[i], StartIndex: startIndex, EndIndex: endIndex}
 				case "string":
 					token = TOKEN{Type: STRING, Literal: match[i], StartIndex: startIndex, EndIndex: endIndex}
 				case "olist":
