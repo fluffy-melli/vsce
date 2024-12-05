@@ -16,10 +16,9 @@ func main() {
 	val j = {
 	    "owo":123
 	}
-	print("123", &f )
-	print(&l )
-	print(&j)
-	print(123)
+	print("%v test : %v -> {&l} {test}")
+	val b = "%v -> {&f}"
+	print("%v -> {&b}")
 	`
 	vm.Get_Line("main", strings.Split(code, "\n"))
 }

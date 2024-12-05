@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"vsce/vm/function"
 	"vsce/vm/heap"
 	"vsce/vm/heap/cash"
 )
@@ -39,18 +40,10 @@ func Variable_Parse(token TOKEN, file_lines []string, line string, i int) {
 			break
 		}
 		cash.VAR_VALUE = n
-		if cash.CALL {
-			cash.Runtime.Files[cash.Runtime.Doing].FuncM[cash.VAR_NAME] = &heap.Heap{
-				Const:  cash.VAR_TYPE == CONST,
-				Global: cash.VAR_TYPE == VAR,
-				Value:  cash.VAR_VALUE,
-			}
-		} else {
-			cash.Runtime.Files[cash.Runtime.Doing].BaseM[cash.VAR_NAME] = &heap.Heap{
-				Const:  cash.VAR_TYPE == CONST,
-				Global: cash.VAR_TYPE == VAR,
-				Value:  cash.VAR_VALUE,
-			}
+		cash.Get_Local_Stack()[cash.VAR_NAME] = &heap.Heap{
+			Const:  cash.VAR_TYPE == CONST,
+			Global: cash.VAR_TYPE == VAR,
+			Value:  cash.VAR_VALUE,
 		}
 		cash.Clear()
 		return
@@ -66,18 +59,10 @@ func Variable_Parse(token TOKEN, file_lines []string, line string, i int) {
 			break
 		}
 		cash.VAR_VALUE = n
-		if cash.CALL {
-			cash.Runtime.Files[cash.Runtime.Doing].FuncM[cash.VAR_NAME] = &heap.Heap{
-				Const:  cash.VAR_TYPE == CONST,
-				Global: cash.VAR_TYPE == VAR,
-				Value:  cash.VAR_VALUE,
-			}
-		} else {
-			cash.Runtime.Files[cash.Runtime.Doing].BaseM[cash.VAR_NAME] = &heap.Heap{
-				Const:  cash.VAR_TYPE == CONST,
-				Global: cash.VAR_TYPE == VAR,
-				Value:  cash.VAR_VALUE,
-			}
+		cash.Get_Local_Stack()[cash.VAR_NAME] = &heap.Heap{
+			Const:  cash.VAR_TYPE == CONST,
+			Global: cash.VAR_TYPE == VAR,
+			Value:  cash.VAR_VALUE,
 		}
 		cash.Clear()
 		return
@@ -87,18 +72,10 @@ func Variable_Parse(token TOKEN, file_lines []string, line string, i int) {
 			return
 		}
 		cash.VAR_VALUE = token.Literal
-		if cash.CALL {
-			cash.Runtime.Files[cash.Runtime.Doing].FuncM[cash.VAR_NAME] = &heap.Heap{
-				Const:  cash.VAR_TYPE == CONST,
-				Global: cash.VAR_TYPE == VAR,
-				Value:  cash.VAR_VALUE,
-			}
-		} else {
-			cash.Runtime.Files[cash.Runtime.Doing].BaseM[cash.VAR_NAME] = &heap.Heap{
-				Const:  cash.VAR_TYPE == CONST,
-				Global: cash.VAR_TYPE == VAR,
-				Value:  cash.VAR_VALUE,
-			}
+		cash.Get_Local_Stack()[cash.VAR_NAME] = &heap.Heap{
+			Const:  cash.VAR_TYPE == CONST,
+			Global: cash.VAR_TYPE == VAR,
+			Value:  strings.ReplaceAll(function.SprintF(fmt.Sprintf("%v", cash.VAR_VALUE)), "\"", ""),
 		}
 		cash.Clear()
 		return
@@ -125,18 +102,10 @@ func Variable_Parse(token TOKEN, file_lines []string, line string, i int) {
 			break
 		}
 		cash.VAR_VALUE = parsed
-		if cash.CALL {
-			cash.Runtime.Files[cash.Runtime.Doing].FuncM[cash.VAR_NAME] = &heap.Heap{
-				Const:  cash.VAR_TYPE == CONST,
-				Global: cash.VAR_TYPE == VAR,
-				Value:  cash.VAR_VALUE,
-			}
-		} else {
-			cash.Runtime.Files[cash.Runtime.Doing].BaseM[cash.VAR_NAME] = &heap.Heap{
-				Const:  cash.VAR_TYPE == CONST,
-				Global: cash.VAR_TYPE == VAR,
-				Value:  cash.VAR_VALUE,
-			}
+		cash.Get_Local_Stack()[cash.VAR_NAME] = &heap.Heap{
+			Const:  cash.VAR_TYPE == CONST,
+			Global: cash.VAR_TYPE == VAR,
+			Value:  cash.VAR_VALUE,
 		}
 		cash.Clear()
 		return

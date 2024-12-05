@@ -18,6 +18,13 @@ func (s *Stack) Override() {
 		}
 	}
 }
+func (s *Stack) Overwrite() {
+	for name, heap := range s.FuncM {
+		if heap.Global {
+			s.BaseM[name] = heap
+		}
+	}
+}
 
 type VM struct {
 	Files  map[string]*Stack

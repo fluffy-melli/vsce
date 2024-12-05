@@ -1,6 +1,9 @@
 package tokenize
 
 import (
+	"fmt"
+	"strings"
+	"vsce/vm/function"
 	"vsce/vm/heap/cash"
 )
 
@@ -10,9 +13,8 @@ func Print_Parse(token TOKEN, file_lines []string, line string, i int) {
 		cash.StartIndex = token.EndIndex + 1
 		cash.PRINT_PULL = true
 	case RPAREN:
-		text := line[cash.StartIndex:token.StartIndex]
-		GET_VAR(text)
-		//fmt.Println(cash.PRINT_OUT)
+		text := strings.ReplaceAll(line[cash.StartIndex:token.StartIndex], "\"", "")
+		fmt.Println(function.SprintF(strings.ReplaceAll(text, "\"", "")))
 		cash.Clear()
 	case NUMBER, STRING:
 		if !cash.PRINT_PULL {

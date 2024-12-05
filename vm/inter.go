@@ -12,6 +12,7 @@ func Get_Line(file_name string, file_lines []string) {
 		cash.Runtime.Files[cash.Runtime.Doing] = &heap.Stack{
 			BaseM: make(map[string]*heap.Heap),
 			FuncM: make(map[string]*heap.Heap),
+			FuncD: make(map[string]*heap.Func_Data),
 		}
 	}
 	for i, line := range file_lines {
