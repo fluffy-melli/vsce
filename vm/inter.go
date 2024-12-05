@@ -21,7 +21,7 @@ func Get_Line(file_name string, file_lines []string) {
 			continue
 		}
 		for _, token := range tokens {
-			if !cash.VAR && !cash.IF && !cash.FUNC {
+			if !cash.VAR && !cash.IF && !cash.FUNC && !cash.CALL {
 				switch token.Type {
 				case tokenize.FUNC:
 					cash.FUNC = true
@@ -36,8 +36,16 @@ func Get_Line(file_name string, file_lines []string) {
 					continue
 				case tokenize.PRINT, tokenize.PRINTF, tokenize.PRINTLN:
 					cash.PRINT = true
+					cash.StartIndex = token.EndIndex + 1
+					continue
+				case tokenize.CALL:
+					cash.CALL = true
+					cash.StartIndex = token.EndIndex + 1
 					continue
 				}
+			}
+			if cash.CALL {
+				tokenize.Call_Parse(token, file_lines, line, i)
 			}
 			if cash.FUNC {
 				tokenize.Func_Parse(token, file_lines, line, i)

@@ -11,7 +11,12 @@ var (
 
 var (
 	CALL      bool        = false
+	CALL_RUN  bool        = false
 	CALL_FUNC string      = ""
+	CALL_PULL bool        = false
+	CALL_BACK string      = ""
+	CALL_ARGS []string    = make([]string, 0)
+	CALL_PASS int         = 0
 	RETURN    interface{} = nil
 )
 
@@ -43,9 +48,14 @@ var (
 )
 
 func Clear() {
-	PRINT = false
-	PRINT_OUT = ""
-	PRINT_PULL = false
+	CALL = false
+	CALL_RUN = false
+	CALL_FUNC = ""
+	CALL_PULL = false
+	CALL_BACK = ""
+	CALL_ARGS = make([]string, 0)
+	CALL_PASS = 0
+	RETURN = nil
 
 	VAR = false
 	VAR_NALE = 0
