@@ -7,15 +7,15 @@ import (
 	"vsce/vm/heap/cash"
 )
 
-func Print_Parse(token TOKEN, file_lines []string, line string, i int) {
+func Print_Parse(token TOKEN, file_lines []string, line string, i int, run bool) {
 	switch token.Type {
 	case LPAREN:
 		cash.StartIndex = token.EndIndex + 1
 		cash.PRINT_PULL = true
 	case RPAREN:
 		text := strings.ReplaceAll(line[cash.StartIndex:token.StartIndex], "\"", "")
-		fmt.Println(function.SprintF(strings.ReplaceAll(text, "\"", "")))
-		cash.Clear()
+		fmt.Println(function.SprintF(strings.ReplaceAll(text, "\"", ""), run))
+		cash.Clear_PRINT()
 	case NUMBER, STRING:
 		if !cash.PRINT_PULL {
 			return

@@ -25,36 +25,36 @@ func Get_Line(file_name string, file_lines []string) {
 				switch token.Type {
 				case tokenize.FUNC:
 					cash.FUNC = true
-					cash.StartIndex = token.EndIndex + 1
+					cash.StartIndex = token.EndIndex
 					cash.FUNC_NALE = i
 					continue
 				case tokenize.VAR, tokenize.VAL, tokenize.CONST:
 					cash.VAR = true
 					cash.VAR_TYPE = token.Type
 					cash.VAR_NALE = i
-					cash.StartIndex = token.EndIndex + 1
+					cash.StartIndex = token.EndIndex
 					continue
 				case tokenize.PRINT, tokenize.PRINTF, tokenize.PRINTLN:
 					cash.PRINT = true
-					cash.StartIndex = token.EndIndex + 1
+					cash.StartIndex = token.EndIndex
 					continue
 				case tokenize.CALL:
 					cash.CALL = true
-					cash.StartIndex = token.EndIndex + 1
+					cash.StartIndex = token.EndIndex
 					continue
 				}
 			}
 			if cash.CALL {
-				tokenize.Call_Parse(token, file_lines, line, i)
+				tokenize.Call_Parse(token, file_lines, line, i, false)
 			}
 			if cash.FUNC {
 				tokenize.Func_Parse(token, file_lines, line, i)
 			}
 			if cash.VAR {
-				tokenize.Variable_Parse(token, file_lines, line, i)
+				tokenize.Variable_Parse(token, file_lines, line, i, false)
 			}
 			if cash.PRINT {
-				tokenize.Print_Parse(token, file_lines, line, i)
+				tokenize.Print_Parse(token, file_lines, line, i, false)
 			}
 		}
 	}

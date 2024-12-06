@@ -4,8 +4,8 @@ import (
 	"vsce/vm/heap"
 )
 
-func Get_Local_Stack() map[string]*heap.Heap {
-	if CALL_RUN {
+func Get_Local_Stack(fun bool) map[string]*heap.Heap {
+	if fun {
 		return Runtime.Files[Runtime.Doing].FuncM
 	}
 	return Runtime.Files[Runtime.Doing].BaseM

@@ -11,7 +11,6 @@ var (
 
 var (
 	CALL      bool        = false
-	CALL_RUN  bool        = false
 	CALL_FUNC string      = ""
 	CALL_PULL bool        = false
 	CALL_BACK string      = ""
@@ -47,16 +46,16 @@ var (
 	FUNC_LINE string   = ""
 )
 
-func Clear() {
+func Clear_CALL() {
 	CALL = false
-	CALL_RUN = false
 	CALL_FUNC = ""
 	CALL_PULL = false
 	CALL_BACK = ""
 	CALL_ARGS = make([]string, 0)
-	CALL_PASS = 0
 	RETURN = nil
+}
 
+func Clear_VAR() {
 	VAR = false
 	VAR_NALE = 0
 	VAR_TYPE = 0
@@ -64,7 +63,9 @@ func Clear() {
 	VAR_LONG = false
 	VAR_NAME = ""
 	VAR_VALUE = nil
+}
 
+func Clear_FUNC() {
 	FUNC = false
 	FUNC_NALE = 0
 	FUNC_PASS = 0
@@ -73,4 +74,10 @@ func Clear() {
 	FUNC_NAME = ""
 	FUNC_ARGS = make([]string, 0)
 	FUNC_LINE = ""
+}
+
+func Clear_PRINT() {
+	PRINT = false
+	PRINT_OUT = ""
+	PRINT_PULL = false
 }

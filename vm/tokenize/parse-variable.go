@@ -19,7 +19,7 @@ func parseJSON(input string) (interface{}, error) {
 	return result, nil
 }
 
-func Variable_Parse(token TOKEN, file_lines []string, line string, i int) {
+func Variable_Parse(token TOKEN, file_lines []string, line string, i int, run bool) {
 	switch token.Type {
 	case EQUAL:
 		if cash.VAR_NALE != i {
@@ -40,12 +40,12 @@ func Variable_Parse(token TOKEN, file_lines []string, line string, i int) {
 			break
 		}
 		cash.VAR_VALUE = n
-		cash.Get_Local_Stack()[cash.VAR_NAME] = &heap.Heap{
+		cash.Get_Local_Stack(run)[cash.VAR_NAME] = &heap.Heap{
 			Const:  cash.VAR_TYPE == CONST,
 			Global: cash.VAR_TYPE == VAR,
 			Value:  cash.VAR_VALUE,
 		}
-		cash.Clear()
+		cash.Clear_VAR()
 		return
 	case FLOAT:
 		if cash.VAR_LONG {
@@ -59,12 +59,12 @@ func Variable_Parse(token TOKEN, file_lines []string, line string, i int) {
 			break
 		}
 		cash.VAR_VALUE = n
-		cash.Get_Local_Stack()[cash.VAR_NAME] = &heap.Heap{
+		cash.Get_Local_Stack(run)[cash.VAR_NAME] = &heap.Heap{
 			Const:  cash.VAR_TYPE == CONST,
 			Global: cash.VAR_TYPE == VAR,
 			Value:  cash.VAR_VALUE,
 		}
-		cash.Clear()
+		cash.Clear_VAR()
 		return
 	case STRING:
 		if cash.VAR_LONG {
@@ -72,12 +72,12 @@ func Variable_Parse(token TOKEN, file_lines []string, line string, i int) {
 			return
 		}
 		cash.VAR_VALUE = token.Literal
-		cash.Get_Local_Stack()[cash.VAR_NAME] = &heap.Heap{
+		cash.Get_Local_Stack(run)[cash.VAR_NAME] = &heap.Heap{
 			Const:  cash.VAR_TYPE == CONST,
 			Global: cash.VAR_TYPE == VAR,
-			Value:  strings.ReplaceAll(function.SprintF(fmt.Sprintf("%v", cash.VAR_VALUE)), "\"", ""),
+			Value:  strings.ReplaceAll(function.SprintF(fmt.Sprintf("%v", cash.VAR_VALUE), run), "\"", ""),
 		}
-		cash.Clear()
+		cash.Clear_VAR()
 		return
 	case LPFUNC, OLIST: // JSON || LIST
 		if cash.VAR_LONG {
@@ -102,12 +102,12 @@ func Variable_Parse(token TOKEN, file_lines []string, line string, i int) {
 			break
 		}
 		cash.VAR_VALUE = parsed
-		cash.Get_Local_Stack()[cash.VAR_NAME] = &heap.Heap{
+		cash.Get_Local_Stack(run)[cash.VAR_NAME] = &heap.Heap{
 			Const:  cash.VAR_TYPE == CONST,
 			Global: cash.VAR_TYPE == VAR,
 			Value:  cash.VAR_VALUE,
 		}
-		cash.Clear()
+		cash.Clear_VAR()
 		return
 	default:
 		if cash.VAR_LONG {

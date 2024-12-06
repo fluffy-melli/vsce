@@ -13,18 +13,18 @@ func Func_Parse(token TOKEN, file_lines []string, line string, i int) {
 			return
 		}
 		if cash.FUNC_NALE != i {
-			cash.FUNC_NAME = strings.TrimSpace(file_lines[cash.FUNC_NALE][cash.StartIndex+1:])
+			cash.FUNC_NAME = strings.TrimSpace(file_lines[cash.FUNC_NALE][cash.StartIndex:])
 			cash.StartIndex = token.StartIndex + 1
 			return
 		}
-		cash.FUNC_NAME = strings.TrimSpace(line[cash.StartIndex+1 : token.StartIndex+1])
+		cash.FUNC_NAME = strings.TrimSpace(line[cash.StartIndex : token.StartIndex+1])
 		cash.StartIndex = token.StartIndex + 1
 		return
 	case RPAREN:
 		if cash.FUNC_PUSH {
 			return
 		}
-		cash.FUNC_ARGS = strings.Split((strings.TrimSpace(line[cash.StartIndex+1 : token.StartIndex+1])), ",")
+		cash.FUNC_ARGS = strings.Split((strings.TrimSpace(line[cash.StartIndex : token.StartIndex+1])), ",")
 		return
 	case LPFUNC:
 		if cash.FUNC_PUSH {
@@ -33,7 +33,7 @@ func Func_Parse(token TOKEN, file_lines []string, line string, i int) {
 			return
 		}
 		cash.FUNC_PUSH = true
-		cash.FUNC_LINE += strings.TrimSpace(line[token.StartIndex+2:])
+		cash.FUNC_LINE += strings.TrimSpace(line[token.StartIndex+1:])
 		return
 	case RPFUNC:
 		if cash.FUNC_PASS != 0 {
@@ -44,11 +44,12 @@ func Func_Parse(token TOKEN, file_lines []string, line string, i int) {
 		cash.FUNC = false
 		cash.FUNC_PUSH = false
 		cash.FUNC_LINE += strings.TrimSpace(line[:token.StartIndex])
+		cash.FUNC_NAME = strings.ReplaceAll(cash.FUNC_NAME, "(", "")
 		cash.Runtime.Files[cash.Runtime.Doing].FuncD[cash.FUNC_NAME] = &heap.Func_Data{
 			Args: cash.FUNC_ARGS,
 			Line: cash.FUNC_LINE,
 		}
-		cash.Clear()
+		cash.Clear_FUNC()
 		return
 	default:
 		if cash.FUNC_PUSH && cash.FUNC_PUSD != i {

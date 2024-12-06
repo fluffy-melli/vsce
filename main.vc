@@ -1,0 +1,13 @@
+val one = 1
+var two = 2
+
+func test(x, y)
+{
+	var owo = "{&x} {&y}"
+
+	print("{&one} {&two} / {&owo}")
+}
+
+call test("{&one},{&two}")
+
+print("{&one} {&two} / {&owo}")

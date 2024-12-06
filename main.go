@@ -3,19 +3,11 @@ package main
 import (
 	"strings"
 	"vsce/vm"
+	"vsce/vm/function"
 )
 
 func main() {
-	code := `
-	func test (x, y)
-    {
-	    var owo = "%v %v -> {&x} {&y}"
-
-		print("%v -> {&owo}")
-	}
-	call test (12,23)
-	print("%v %v -> {&x} {&y}")
-	print("%v -> {&owo}")
-	`
-	vm.Get_Line("main", strings.Split(code, "\n"))
+	filename := "./main.vc"
+	con := function.Read(filename)
+	vm.Get_Line(filename, strings.Split(con, "\n"))
 }
